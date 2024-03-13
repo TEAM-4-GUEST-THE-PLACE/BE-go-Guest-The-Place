@@ -1,6 +1,15 @@
 package main
-import "fmt"
+import (
+	"fmt"
+	"goGuestThePlace/config"
+)
 
 func main() {
-	fmt.println('hello world')
+	e := echo.New()
+	// Tambahin migration disini
+	
+	config.DBConfig()
+	// Tambahin Route disini
+
+	e.Logger.Fatal(e.Start(":8000"))
 }
