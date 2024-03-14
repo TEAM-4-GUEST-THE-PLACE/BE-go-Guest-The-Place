@@ -7,9 +7,9 @@ import (
 
 var DB *gorm.DB
 
-func DBConfig()  {
+func DBConfig() {
 	var err error
-	dsn := "host=roundhouse.proxy.rlwy.net user=postgres password=kqaUZaPvstRpAiHSUDeBbVxVPtkgpEhv dbname=railway port=32190 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := "host=localhost user=postgres password=dwidyad dbname=Trivia port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed connect to database")

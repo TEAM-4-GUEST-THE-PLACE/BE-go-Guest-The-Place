@@ -6,13 +6,13 @@ import (
 
 type Question struct {
 	ID          	 uint   `json:"id" gorm:"primaryKey"`
-	question      	 string `json:"question"`
-	answer       	 string `json:"answer"`
-	answerTrue  	 string `json:"answerTrue"`
-	answerFalse 	 string `json:"answerFalse"`
-	image    		 string `json:"image"`
+	Question      	 string `json:"question"`
+	Answer       	 string `json:"answer"`
+	AnswerTrue  	 string `json:"answerTrue"`
+	AnswerFalse 	 string `json:"answerFalse"`
+	Image    		 string `json:"image"`
 
-	created_ct  time.Time
-	updated_ct  time.Time
+	Created_ct  time.Time
+	Updated_ct  time.Time
 	
 }

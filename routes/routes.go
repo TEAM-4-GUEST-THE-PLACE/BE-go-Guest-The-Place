@@ -6,7 +6,7 @@ import (
 	"goGuestThePlace/controller"
 	"goGuestThePlace/services"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 func Routes(e *echo.Group) {
@@ -14,6 +14,6 @@ func Routes(e *echo.Group) {
 	ra := services.RepositoryQuestion(config.DB)
 	cra := controller.QuestionController(ra)
 
-	e.GET("/Questions", cra.GetQuestions)
+	e.GET("/questions", cra.GetQuestions)
 
 }

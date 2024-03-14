@@ -5,7 +5,7 @@ import (
 	"goGuestThePlace/migration"
 	"goGuestThePlace/routes"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // func main() {
@@ -18,16 +18,13 @@ import (
 // 	e.Logger.Fatal(e.Start(":8000"))
 // }
 
-func main()  {
+func main() {
 	e := echo.New()
 
 	config.DBConfig()
 	migration.RunMigration()
 	routes.Routes(e.Group("/api/v1"))
-	
-	e.Logger.Fatal(e.Start(":8000"))
 
-
-	
+	e.Logger.Fatal(e.Start("localhost:5001"))
 
 }
