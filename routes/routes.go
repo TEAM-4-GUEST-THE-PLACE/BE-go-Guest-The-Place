@@ -1,7 +1,6 @@
 package routes
 
 import (
-
 	"goGuestThePlace/config"
 	"goGuestThePlace/controller"
 	"goGuestThePlace/services"
@@ -15,5 +14,11 @@ func Routes(e *echo.Group) {
 	cra := controller.QuestionController(ra)
 
 	e.GET("/questions", cra.GetQuestions)
+
+
+	rp := services.RepositoryUser(config.DB)
+	crpa := controller.UserController(rp)
+
+	e.GET("/users", crpa.GetUsers)
 
 }

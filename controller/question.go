@@ -8,10 +8,9 @@ import (
 	"goGuestThePlace/services"
 
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
+
 )
 	
-var DB *gorm.DB
 
 type controllerQuestion struct{
 	QuestionRepository services.QuestionService
