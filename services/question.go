@@ -2,6 +2,7 @@ package services
 
 import (
 	"goGuestThePlace/models"
+
 	"gorm.io/gorm"
 )
 
@@ -16,7 +17,9 @@ func RepositoryQuestion(db *gorm.DB) *repository {
 func (r *repository) GetQuestion() ([]models.Question, error) {
 	var questions []models.Question
 
-	err := r.db.Find(&questions).Error
+	// err := r.db.Find(&questions).Error
+	r.db.Find(&questions)
 
-	return questions, err
+	return questions, nil	
 }
+	
