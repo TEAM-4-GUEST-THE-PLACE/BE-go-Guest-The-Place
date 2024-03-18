@@ -7,3 +7,4 @@ import (
 type repository struct {
 	db *gorm.DB
 }
+

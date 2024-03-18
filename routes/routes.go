@@ -15,10 +15,21 @@ func Routes(e *echo.Group) {
 
 	e.GET("/questions", cra.GetQuestions)
 
-
 	rp := services.RepositoryUser(config.DB)
 	crpa := controller.UserController(rp)
 
-	e.GET("/users", crpa.GetUsers)
+	e.GET("/users", crpa.GetUser)
+	e.POST("/users", crpa.CreateUser)
+	e.PUT("/users/:id", crpa.UpdateUser)
+
+	rpa := services.RepositoryDiamond(config.DB)
+	crdpa := controller.DiamondController(rpa)
+
+	e.GET("/diamonds", crdpa.GetDiamond)
+
+	ca := services.RepositoryAvatar(config.DB)
+	craa := controller.AvatarController(ca)
+
+	e.GET("/avatars", craa.GetAvatar)
 
 }

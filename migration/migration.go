@@ -10,7 +10,9 @@ import (
 func RunMigration()  {
 	err := config.DB.AutoMigrate(
 		&models.Question{},
-		&models.User{},
+		&models.Users{},
+		&models.Diamond{},
+		
 		
 	)
 
