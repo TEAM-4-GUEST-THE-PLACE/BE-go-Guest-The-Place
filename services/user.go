@@ -2,12 +2,14 @@ package services
 
 import (
 	"goGuestThePlace/models"
+
 	"gorm.io/gorm"
 )
 
 type UserService interface {
 	GetUser() ([]models.Users, error)
-	UpadateUser(ID int, users models.Users) (models.Users,error)
+	GetUserById(ID int) (models.Users, error)
+	UpadateUser(users models.Users) (models.Users,error)
 }
 
 func RepositoryUser(db *gorm.DB) *repository {
@@ -22,10 +24,16 @@ func (r *repository) GetUser() ([]models.Users, error) {
 	return users, err
 }
 
-func (r *repository) UpadateUser(ID int, users models.Users) (models.Users, error) {
-	var user models.Users
+func (r *repository) GetUserById(ID int) (models.Users, error) {
+	var users models.Users
 
-	err := r.db.Save(&user).Error
+	err := r.db.First(&users, ID).Error
 
-	return user, err
+	return users, err
+}
+
+func (r *repository) UpadateUser(users models.Users) (models.Users, error) {
+	err := r.db.Save(&users).Error
+
+	return users, err
 }

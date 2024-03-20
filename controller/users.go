@@ -40,9 +40,22 @@ func (cu *controllerUsers) GetUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Get Users Success", user))
 }
 
+func (cu *controllerUsers) GetUserById(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+	}
+	user, err := cu.UserRepository.GetUserById(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.FailedResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helpers.SuccessResponse("Get Users Success with id", user))
+}
+
 func (cu *controllerUsers) UpdateUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	users, err := cu.UserRepository.UpadateUser(id, models.Users{})
+	users, err := cu.UserRepository.GetUserById(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
@@ -68,7 +81,7 @@ func (cu *controllerUsers) UpdateUser(c echo.Context) error {
 
 	users.Updated_at = time.Now()
 
-	response, err := cu.UserRepository.UpadateUser(id, users)
+	response, err := cu.UserRepository.UpadateUser(users)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.FailedResponse(err.Error()))

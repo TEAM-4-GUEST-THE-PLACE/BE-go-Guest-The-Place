@@ -25,6 +25,6 @@ func main() {
 	migration.RunMigration()
 	routes.Routes(e.Group("/api/v1"))
 
-	e.Logger.Fatal(e.Start("localhost:5001"))
+	e.Logger.Fatal(e.Start("localhost:5002"))
 
 }
