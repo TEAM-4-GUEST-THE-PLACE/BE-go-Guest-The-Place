@@ -20,7 +20,9 @@ func Routes(e *echo.Group) {
 
 	e.GET("/users", crpa.GetUser)
 	e.GET("/users/:id", crpa.GetUserById)
-	e.PATCH("/users/:id", crpa.UpdateUser)
+	e.POST("/users", crpa.CreatedUser)
+	e.PUT("/users/:id", crpa.UpdateUser)
+	e.DELETE("/users/:id", crpa.DeleteUser)
 
 	rpa := services.RepositoryDiamond(config.DB)
 	crdpa := controller.DiamondController(rpa)

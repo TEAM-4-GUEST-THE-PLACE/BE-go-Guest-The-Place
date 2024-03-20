@@ -6,19 +6,12 @@ import (
 	"strconv"
 	"time"
 
-	// "strconv"
-	// "time"
-
-	// usersdto "goGuestThePlace/dto/user"
-
-	// dto "goGuestThePlace/dto/results"
-
 	"goGuestThePlace/helpers"
 	"goGuestThePlace/models"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 
-	// "goGuestThePlace/models"
 	"goGuestThePlace/services"
 )
 
@@ -53,6 +46,42 @@ func (cu *controllerUsers) GetUserById(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Get Users Success with id", user))
 }
 
+func (cu *controllerUsers) CreatedUser(c echo.Context) error {
+	request := new(models.CreateUserRequest)
+	if err := c.Bind(request); err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+	}
+
+	validation := validator.New()
+	err := validation.Struct(request)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+	}
+
+	data := models.Users{
+		ID:             request.ID,
+		Question_id:    request.Question_id,
+		Avatar_id:      request.Avatar_id,
+		Diamond_totals: request.Diamond_totals,
+		Fullname:       request.Fullname,
+		Username:       request.Username,
+		Email:          request.Email,
+
+		Created_at: time.Now(),
+		Updated_at: time.Now(),
+	}
+
+	response, err := cu.UserRepository.CreatedUser(data)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.FailedResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helpers.SuccessResponse("Create User Success", response))
+
+}
+
 func (cu *controllerUsers) UpdateUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	users, err := cu.UserRepository.GetUserById(id)
@@ -61,22 +90,22 @@ func (cu *controllerUsers) UpdateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
 	}
 
-	request := models.UpdateUserRequest{
-		Fullname: c.FormValue("fullname"),
-		Username: c.FormValue("username"),
-		Email:    c.FormValue("email"),
+	request := new(models.UpdateUserRequest)
+	if err := c.Bind(request); err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+
 	}
 
-	if request.Fullname == "" {
-		request.Fullname = users.Fullname
+	if request.Fullname != "" {
+		users.Fullname = request.Fullname
 	}
 
-	if request.Username == "" {
-		request.Username = users.Username
+	if request.Username != "" {
+		users.Username = request.Username
 	}
 
-	if request.Email == "" {
-		request.Email = users.Email
+	if request.Email != "" {
+		users.Email = request.Email
 	}
 
 	users.Updated_at = time.Now()
@@ -88,4 +117,20 @@ func (cu *controllerUsers) UpdateUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Update User Success", response))
+}
+
+func (cu *controllerUsers) DeleteUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	users, err := cu.UserRepository.GetUserById(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+	}
+
+	data, err := cu.UserRepository.DeleteUsers(users)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.FailedResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helpers.SuccessResponse("Delete User Success", data))
 }

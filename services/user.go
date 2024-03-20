@@ -9,7 +9,9 @@ import (
 type UserService interface {
 	GetUser() ([]models.Users, error)
 	GetUserById(ID int) (models.Users, error)
+	CreatedUser(users models.Users) (models.Users,error)
 	UpadateUser(users models.Users) (models.Users,error)
+	DeleteUsers(users models.Users) (models.Users,error)
 }
 
 func RepositoryUser(db *gorm.DB) *repository {
@@ -32,8 +34,21 @@ func (r *repository) GetUserById(ID int) (models.Users, error) {
 	return users, err
 }
 
+func (r *repository) CreatedUser(users models.Users) (models.Users, error) {
+	err := r.db.Create(&users).Error
+
+	return users, err
+}
+
+
 func (r *repository) UpadateUser(users models.Users) (models.Users, error) {
 	err := r.db.Save(&users).Error
+
+	return users, err
+}
+
+func (r *repository) DeleteUsers(users models.Users) (models.Users, error) {
+	err := r.db.Delete(&users).Error
 
 	return users, err
 }
