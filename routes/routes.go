@@ -14,6 +14,7 @@ func Routes(e *echo.Group) {
 	cra := controller.QuestionController(ra)
 
 	e.GET("/questions", cra.GetQuestions)
+	e.GET("/questions/:id", cra.GetQuestionById)
 
 	rp := services.RepositoryUser(config.DB)
 	crpa := controller.UserController(rp)	
@@ -33,5 +34,11 @@ func Routes(e *echo.Group) {
 	craa := controller.AvatarController(ca)
 
 	e.GET("/avatars", craa.GetAvatar)
+
+	cr := services.RepositoryTransaction(config.DB)
+	crt := controller.TransactionController(cr)
+
+	e.GET("/transactions", crt.GetTransactions)
+	e.POST("/transactions", crt.CreateTransaction)
 
 }

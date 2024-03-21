@@ -12,6 +12,8 @@ func RunMigration()  {
 		&models.Question{},
 		&models.Users{},
 		&models.Diamond{},
+		&models.Transaction{},
+		
 		
 		
 	)
