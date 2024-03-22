@@ -46,6 +46,19 @@ func (cu *controllerUsers) GetUserById(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Get Users Success with id", user))
 }
 
+func (cu *controllerUsers) GetUserByEmail(c echo.Context) error {
+	email := c.Param("email")
+	user, err := cu.UserRepository.GetUserByEmail(email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.FailedResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helpers.SuccessResponse("Get Users Success with email", user))
+
+}
+
+
+
 func (cu *controllerUsers) CreatedUser(c echo.Context) error {
 	request := new(models.CreateUserRequest)
 	if err := c.Bind(request); err != nil {
@@ -61,11 +74,9 @@ func (cu *controllerUsers) CreatedUser(c echo.Context) error {
 
 	data := models.Users{
 		ID:             request.ID,
-		Question_id:    request.Question_id,
 		Avatar_id:      request.Avatar_id,
 		Diamond_totals: request.Diamond_totals,
 		Fullname:       request.Fullname,
-		Username:       request.Username,
 		Email:          request.Email,
 
 		Created_at: time.Now(),

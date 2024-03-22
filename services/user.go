@@ -9,6 +9,7 @@ import (
 type UserService interface {
 	GetUser() ([]models.Users, error)
 	GetUserById(ID int) (models.Users, error)
+	GetUserByEmail (email string) (models.Users, error)
 	CreatedUser(users models.Users) (models.Users,error)
 	UpadateUser(users models.Users) (models.Users,error)
 	DeleteUsers(users models.Users) (models.Users,error)
@@ -30,6 +31,14 @@ func (r *repository) GetUserById(ID int) (models.Users, error) {
 	var users models.Users
 
 	err := r.db.First(&users, ID).Error
+
+	return users, err
+}
+
+func (r *repository) GetUserByEmail(email string) (models.Users, error) {
+	var users models.Users
+
+	err := r.db.First(&users, "email = ?",email).Error
 
 	return users, err
 }

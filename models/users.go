@@ -6,7 +6,6 @@ import (
 
 type Users struct {
 	ID             uint   `json:"id" gorm:"primaryKey"`
-	Question_id    int    `json:"question_id"`
 	Avatar_id      int    `json:"avatar_id"`
 	Diamond_totals int    `json:"diamond_totals"`
 	Fullname       string `json:"fullname"`
@@ -27,7 +26,6 @@ type UpdateUserRequest struct {
 
 type CreateUserRequest struct {
 	ID             uint   `json:"id" gorm:"primaryKey" form:"id" `
-	Question_id    int    `json:"question_id" form:"question_id" `
 	Avatar_id      int    `json:"avatar_id" form:"avatar_id" `
 	Diamond_totals int    `json:"diamond_totals" form:"diamond_totals" `
 	Fullname       string `json:"fullname" form:"fullname" validate:"required"`
