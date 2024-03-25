@@ -6,6 +6,7 @@ import (
 	"goGuestThePlace/models"
 	"goGuestThePlace/services"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -60,45 +61,51 @@ func (cr *controllerTransaction) CreateTransaction(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Create Transaction Success", response))
 }
 
-// func (cr *controllerTransaction) Notification(c echo.Context) error {
-// 	var notificationPayload map[string]interface{}
+func (cr *controllerTransaction) Notification(c echo.Context) error {
+	var notificationPayload map[string]interface{}
 
-// 	if err := c.Bind(&notificationPayload); err != nil {
-// 		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
-// 	}
-// 	transactionStatus := notificationPayload["transaction_status"].(string)
-// 	fraudStatus := notificationPayload["fraud_status"].(string)
-// 	orderId := notificationPayload["order_id"].(string)
+	if err := c.Bind(&notificationPayload); err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+	}
 
-// 	orderId, _ = strconv.Atoi(orderId)
+	transactionStatus, ok := notificationPayload["transaction_status"].(string)
+	if !ok {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse("invalid transaction_status"))
+	}
 
-// 	fmt.Print("test payload", notificationPayload)
+	orderID, ok := notificationPayload["order_id"].(string)
+	if !ok {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse("invalid order_id"))
+	}
 
-// 	if transactionStatus == "capture" {
-// 		if fraudStatus == "accept" {
-// 			TransactionRepository.UpadateTransaction("success", orderId)
+	orderIDInt, err := strconv.Atoi(orderID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse("invalid order_id format"))
+	}
 
-// 		} else if fraudStatus == "challenge" {
-// 			TransactionRepository.UpadateTransaction("pending", orderId)
+	fmt.Println("test payload", notificationPayload)
 
-// 		}
-// 	} else if transactionStatus == "settlement" {
-// 		TransactionRepository.UpadateTransaction("success", orderId)
+	switch transactionStatus {
+	case "capture":
+		fraudStatus, ok := notificationPayload["fraud_status"].(string)
+		if !ok {
+			return c.JSON(http.StatusBadRequest, helpers.FailedResponse("invalid fraud_status"))
+		}
+		switch fraudStatus {
+		case "accept":
+			cr.TransactionRepository.UpadateTransaction("success", orderIDInt)
+		case "challenge":
+			cr.TransactionRepository.UpadateTransaction("pending", orderIDInt)
+		}
+	case "settlement":
+		cr.TransactionRepository.UpadateTransaction("success", orderIDInt)
+	case "deny", "cancel", "expire":
+		cr.TransactionRepository.UpadateTransaction("failed", orderIDInt)
+	case "pending":
+		cr.TransactionRepository.UpadateTransaction("pending", orderIDInt)
+	default:
+		return c.JSON(http.StatusBadRequest, helpers.FailedResponse("invalid transaction_status"))
+	}
 
-// 	} else if transactionStatus == "deny" {
-// 		TransactionRepository.UpadateTransaction("failed", orderId)
-
-// 	} else if transactionStatus == "cancel" || transactionStatus == "expire" {
-// 		TransactionRepository.UpadateTransaction("failed", orderId)
-
-// 	} else if transactionStatus == "pending" {
-// 		tTransactionRepository, err := UpadateTransaction("pending", orderId)
-
-// 	} else if transactionStatus == "settlement" {
-// 		TransactionRepository, err := UpadateTransaction("success", orderId)
-
-// 	}
-
-// 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Notification Success", transaction))
-
-// }
+	return c.JSON(http.StatusOK, helpers.SuccessResponse("Notification Success", notificationPayload))
+}
