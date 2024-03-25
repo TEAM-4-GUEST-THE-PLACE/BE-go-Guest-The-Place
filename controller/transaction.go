@@ -59,3 +59,46 @@ func (cr *controllerTransaction) CreateTransaction(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Create Transaction Success", response))
 }
+
+// func (cr *controllerTransaction) Notification(c echo.Context) error {
+// 	var notificationPayload map[string]interface{}
+
+// 	if err := c.Bind(&notificationPayload); err != nil {
+// 		return c.JSON(http.StatusBadRequest, helpers.FailedResponse(err.Error()))
+// 	}
+// 	transactionStatus := notificationPayload["transaction_status"].(string)
+// 	fraudStatus := notificationPayload["fraud_status"].(string)
+// 	orderId := notificationPayload["order_id"].(string)
+
+// 	orderId, _ = strconv.Atoi(orderId)
+
+// 	fmt.Print("test payload", notificationPayload)
+
+// 	if transactionStatus == "capture" {
+// 		if fraudStatus == "accept" {
+// 			TransactionRepository.UpadateTransaction("success", orderId)
+
+// 		} else if fraudStatus == "challenge" {
+// 			TransactionRepository.UpadateTransaction("pending", orderId)
+
+// 		}
+// 	} else if transactionStatus == "settlement" {
+// 		TransactionRepository.UpadateTransaction("success", orderId)
+
+// 	} else if transactionStatus == "deny" {
+// 		TransactionRepository.UpadateTransaction("failed", orderId)
+
+// 	} else if transactionStatus == "cancel" || transactionStatus == "expire" {
+// 		TransactionRepository.UpadateTransaction("failed", orderId)
+
+// 	} else if transactionStatus == "pending" {
+// 		tTransactionRepository, err := UpadateTransaction("pending", orderId)
+
+// 	} else if transactionStatus == "settlement" {
+// 		TransactionRepository, err := UpadateTransaction("success", orderId)
+
+// 	}
+
+// 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Notification Success", transaction))
+
+// }
