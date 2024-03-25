@@ -26,7 +26,7 @@ type UpdateUserRequest struct {
 
 type CreateUserRequest struct {
 	ID              uint   `json:"id" gorm:"primaryKey" form:"id" `
-	Avatar_id       int    `json:"avatar_id" form:"avatar_id" `
+	Avatars_id       int    `json:"avatars_id" form:"avatars_id" `
 	Diamonds_totals int    `json:"diamonds_totals" form:"diamonds_totals" `
 	Fullname        string `json:"fullname" form:"fullname" validate:"required"`
 	Username        string `json:"username" form:"username" validate:"required"`

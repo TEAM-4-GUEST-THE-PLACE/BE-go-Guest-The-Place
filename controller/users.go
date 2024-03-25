@@ -74,9 +74,9 @@ func (cu *controllerUsers) CreatedUser(c echo.Context) error {
 
 	data := models.Users{
 		ID:             request.ID,
-		Avatar_id:      request.Avatar_id,
+		Avatars_id:      request.Avatars_id,
 		Username:       request.Username,	
-		Diamond_totals: request.Diamond_totals,
+		Diamonds_totals: request.Diamonds_totals,
 		Fullname:       request.Fullname,
 		Email:          request.Email,
 

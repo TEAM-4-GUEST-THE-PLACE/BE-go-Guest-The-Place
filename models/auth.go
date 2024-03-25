@@ -6,8 +6,8 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Fullname       string `json:"fullname"`
-	Email          string `json:"email"`
-	Diamond_totals int    `json:"diamond_totals" form:"diamond_totals" `
-	Avatar_id      int    `json:"avatar_id" form:"avatar_id" `
+	Fullname       	string `json:"fullname"`
+	Email          	string `json:"email"`
+	Diamonds_totals int    `json:"diamonds_totals" form:"diamonds_totals" `
+	Avatar_id      	int    `json:"avatar_id" form:"avatar_id" `
 }

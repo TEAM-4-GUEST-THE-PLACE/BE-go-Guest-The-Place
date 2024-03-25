@@ -37,8 +37,8 @@ func (ca *controllerAuth) Login(c echo.Context) error {
 	LoginResponse := models.LoginResponse{
 		Fullname:       user.Fullname,
 		Email:          user.Email,
-		Diamond_totals: user.Diamond_totals,
-		Avatar_id:      user.Avatar_id,
+		Diamonds_totals: user.Diamonds_totals,
+		Avatar_id:      user.Avatars_id,
 	}
 
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Login Success", LoginResponse))
