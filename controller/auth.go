@@ -38,7 +38,6 @@ func (ca *controllerAuth) Login(c echo.Context) error {
 		Fullname:       user.Fullname,
 		Email:          user.Email,
 		Diamonds_totals: user.Diamonds_totals,
-		Avatar_id:      user.Avatars_id,
 	}
 
 	return c.JSON(http.StatusOK, helpers.SuccessResponse("Login Success", LoginResponse))
