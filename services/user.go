@@ -22,7 +22,7 @@ func RepositoryUser(db *gorm.DB) *repository {
 func (r *repository) GetUser() ([]models.Users, error) {
 	var users []models.Users
 
-	err := r.db.Find(&users).Error
+	err := r.db.Preload("Avatars").Find(&users).Error
 
 	return users, err
 }

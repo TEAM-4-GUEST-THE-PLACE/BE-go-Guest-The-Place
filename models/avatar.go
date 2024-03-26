@@ -6,10 +6,10 @@ import (
 
 
 type Avatar struct {
-	ID         	uint   `json:"id" gorm:"primaryKey"`
-	Image 		string `json:"image"`
+	ID         	uint   		`json:"id" gorm:"primaryKey"`
+	Image 		string 		`json:"image"`
+	Users		[]Users		`gorm:"foreignKey:Avatars"`
 
-
-	Created_ct time.Time
-	Updated_ct time.Time
+	Created_at time.Time
+	Updated_at time.Time
 }

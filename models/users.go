@@ -5,15 +5,15 @@ import (
 )
 
 type Users struct {
-	ID              uint   `json:"id" gorm:"primaryKey"`
-	Avatars_id      int    `json:"avatars_id"`
-	Diamonds_totals int    `json:"diamonds_totals"`
-	Fullname        string `json:"fullname"`
-	Username        string `json:"username"`
-	Email           string `json:"email"`
-
-	Created_at time.Time
-	Updated_at time.Time
+    ID              uint     `json:"id" gorm:"primaryKey"`
+    Avatars_id      int      `json:"avatars_id"`
+    Diamonds_totals int      `json:"diamonds_totals"`
+    Fullname        string   `json:"fullname"`
+    Username        string   `json:"username"`
+    Email           string   `json:"email"`
+    Avatars         uint 	
+    Created_at      time.Time
+    Updated_at      time.Time
 }
 
 
@@ -26,7 +26,7 @@ type UpdateUserRequest struct {
 
 type CreateUserRequest struct {
 	ID              uint   `json:"id" gorm:"primaryKey" form:"id" `
-	Avatars_id       int    `json:"avatars_id" form:"avatars_id" `
+	Avatars_id       uint    `json:"avatars_id" form:"avatars_id" `
 	Diamonds_totals int    `json:"diamonds_totals" form:"diamonds_totals" `
 	Fullname        string `json:"fullname" form:"fullname" validate:"required"`
 	Username        string `json:"username" form:"username" validate:"required"`
